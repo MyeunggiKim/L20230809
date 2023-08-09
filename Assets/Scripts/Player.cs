@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
 
     public GameObject bulletExplosion;
 
-    public GameManager gameManager;
+    GameManager gameManager;
     Enemy enemy;
 
     private void OnCollisionEnter(Collision other)

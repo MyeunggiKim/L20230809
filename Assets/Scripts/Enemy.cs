@@ -65,21 +65,16 @@ public class Enemy : MonoBehaviour
     //
     private void OnCollisionEnter(Collision otherObject)
     {
-        if (otherObject.gameObject.tag == "PlayerBullet")
-        {
             hp--;
             gameManager.attackScore += 10;
 
-            if (hp < 0)
+            if (hp > 0)
             {
                 if (otherObject.gameObject.tag == "Player")
                 {
                     player.GetComponent<PlayerMove>().hp--;
 
-                    if (player.GetComponent<PlayerMove>().hp < 0)
-                    {
-                        Destroy(otherObject.gameObject);
-                    }
+                    Destroy(gameObject);
                 }
 
                 Destroy(gameObject);
@@ -105,7 +100,7 @@ public class Enemy : MonoBehaviour
                 gameManager.destroyScoreTxt.text = gameManager.destroyScore.ToString();
 
             }
-        }
+        
     }
 
     private void OnCollisionStay(Collision collision)

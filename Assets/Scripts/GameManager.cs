@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
         attackScoreTxt.text = "0";
         destroyScoreTxt.text = "0";
         bestScore = PlayerPrefs.GetInt("Best Score");
+        bestScoreTxt.text= bestScore.ToString();
     }
 
     // Update is called once per frame
