@@ -8,6 +8,9 @@ public class Player : MonoBehaviour
 
     public GameObject bulletExplosion;
 
+    public GameManager gameManager;
+    Enemy enemy;
+
     private void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.tag == "Enemy" || other.gameObject.tag == "EnemyBullet")
@@ -21,6 +24,13 @@ public class Player : MonoBehaviour
 
                     GameObject bulletExplosionGO = Instantiate(bulletExplosion);
                     bulletExplosionGO.transform.position = transform.position;
+                    
+                    GameManager gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+                    
+                    gameManager.bestScore = gameManager.attackScore + gameManager.destroyScore;
+                    gameManager.bestScoreTxt.text = gameManager.bestScore.ToString();
+
+                    PlayerPrefs.SetInt("Best Score", gameManager.bestScore);
                 }
             }
         }

@@ -9,7 +9,9 @@ using UnityEngine;
 //목표4: 10프로의 확률로 플레이어를 따라간다.
 //목표5: 적도 플레이어를 향해 일정 시간마다 총알을 쏜다.
 //목표6: 충돌시 폭발 효과를 생성한다.
-//목표7; 총알과 충돌시 hp 감소, 플레이어와 충돌시 파괴한다.
+//목표7: 총알과 충돌시 hp 감소, 플레이어와 충돌시 파괴한다.
+//목표8: 피격시 게임 매니저에 attackScore를 올린다.
+//목표9: 격추시 게임 매니저에 destroyScore를 올린다.
 public class Enemy : MonoBehaviour
 {
 
@@ -19,6 +21,8 @@ public class Enemy : MonoBehaviour
     GameObject player;
     public GameObject eplosionEff;
     public int hp = 3;
+
+    GameManager gameManager;
 
     Vector3 playerDir;
 
@@ -35,6 +39,8 @@ public class Enemy : MonoBehaviour
                 dir = (player.transform.position -gameObject.transform.position).normalized;
             }
         }
+
+        gameManager =GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     // Update is called once per frame
@@ -51,43 +57,54 @@ public class Enemy : MonoBehaviour
 
         transform.position += dir * speed * Time.deltaTime;
 
+        gameManager.attackScoreTxt.text = gameManager.attackScore.ToString();
+        gameManager.destroyScoreTxt.text = gameManager.destroyScore.ToString();
+
     }
 
     //
     private void OnCollisionEnter(Collision otherObject)
     {
-        hp--;
-
-        if (hp < 0)
+        if (otherObject.gameObject.tag == "PlayerBullet")
         {
-            if (otherObject.gameObject.tag == "Player")
-            {
-                player.GetComponent<PlayerMove>().hp--;
+            hp--;
+            gameManager.attackScore += 10;
 
-                if(player.GetComponent<PlayerMove>().hp < 0)
+            if (hp < 0)
+            {
+                if (otherObject.gameObject.tag == "Player")
+                {
+                    player.GetComponent<PlayerMove>().hp--;
+
+                    if (player.GetComponent<PlayerMove>().hp < 0)
+                    {
+                        Destroy(otherObject.gameObject);
+                    }
+                }
+
+                Destroy(gameObject);
+
+                GameObject bulletExplosionGO = Instantiate(eplosionEff);
+                bulletExplosionGO.transform.position = transform.position;
+
+                if (otherObject.gameObject.tag != "DestroyZone")
                 {
                     Destroy(otherObject.gameObject);
                 }
             }
-
-            Destroy(gameObject);
-
-            GameObject bulletExplosionGO = Instantiate(eplosionEff);
-            bulletExplosionGO.transform.position = transform.position;
-
-            if (otherObject.gameObject.tag != "DestroyZone")
+            else if (hp <= 0)
             {
-                Destroy(otherObject.gameObject);
+                gameManager.destroyScore += 100;
+
+                Destroy(gameObject);
+
+                GameObject bulletExplosionGO = Instantiate(eplosionEff);
+                bulletExplosionGO.transform.position = transform.position;
+
+
+                gameManager.destroyScoreTxt.text = gameManager.destroyScore.ToString();
+
             }
-        }
-        else if (hp<0)
-        {
-            Destroy(gameObject);
-
-            Destroy(otherObject.gameObject);
-
-            GameObject bulletExplosionGO = Instantiate(eplosionEff);
-            bulletExplosionGO.transform.position = transform.position;
         }
     }
 

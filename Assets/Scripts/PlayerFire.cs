@@ -13,7 +13,7 @@ public class PlayerFire : MonoBehaviour
 
     private void Start()
     {
-        bullet.layer = 11;
+        bullet.layer = 11;        
     }
 
     // Update is called once per frame
@@ -22,6 +22,7 @@ public class PlayerFire : MonoBehaviour
         //순서1: 입력을 받고 싶다.
         if (Input.GetKeyDown(KeyCode.Space))
         {
+
             ExcuteSkill(skillLevel);
         }
     }
@@ -47,6 +48,7 @@ public class PlayerFire : MonoBehaviour
 
     void ExcuteSkill0()
     {
+        bullet.tag = "PlayerBullet";
         //순서2: 총알을 만들고 싶다.
         GameObject bulletGO = Instantiate(bullet);
 
@@ -56,6 +58,7 @@ public class PlayerFire : MonoBehaviour
 
     void ExcuteSkill1()
     {
+        bullet.tag = "PlayerBullet";
         //순서2: 총알을 만들고 싶다.
         GameObject bulletGO = Instantiate(bullet);
         GameObject bulletGO1 = Instantiate(bullet);
@@ -67,6 +70,7 @@ public class PlayerFire : MonoBehaviour
 
     void ExcuteSkill2()
     {
+        bullet.tag = "PlayerBullet";
         //순서2: 총알을 만들고 싶다.
         GameObject bulletGO = Instantiate(bullet);
         GameObject bulletGO1 = Instantiate(bullet);
